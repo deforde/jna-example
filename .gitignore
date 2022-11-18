@@ -1,5 +1,5 @@
-kotlinc/
-foo-build/
+jna.jar
 foo.*
 libfoo.so
-kfoo.*
+HelloWorld*
+build/

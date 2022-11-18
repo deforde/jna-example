@@ -4,4 +4,4 @@ all:
 	./example.sh
 
 clean:
-	git ls-files -o --directory | xargs -n1 rm -rf
+	git ls-files -o --directory | awk '$$0 !~ /jna\.jar/ {system("rm -rf "$$1)}'
