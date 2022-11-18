@@ -21,23 +21,26 @@ if [[ ! -f jna.jar ]]; then
   curl -L https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar -o jna.jar
 fi
 
-cat > HelloWorld.java <<EOF
+cat > Foo.java <<EOF
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
-public class HelloWorld {
+public class Foo {
   public interface CLibrary extends Library {
-    CLibrary INSTANCE = (CLibrary)Native.load((Platform.isWindows() ? "msvcrt" : "c"), CLibrary.class);
-    void printf(String format, Object... args);
+    CLibrary INSTANCE = (CLibrary)Native.load("foo", CLibrary.class);
+    int foo();
   }
   public static void main(String[] args) {
-    CLibrary.INSTANCE.printf("Hello, World\n");
-    for (int i=0; i < args.length; i++) {
-      CLibrary.INSTANCE.printf("Argument %d: %s\n", i, args[i]);
-    }
+    int ans = CLibrary.INSTANCE.foo();
+    System.out.println(ans);
   }
 }
 EOF
 
-javac -cp jna.jar:. HelloWorld.java -d build
-java -cp jna.jar:build HelloWorld
+javac -cp jna.jar:. Foo.java -d build
+RET=$(java -Djna.library.path=$PWD -cp jna.jar:build Foo)
+if [[ $RET != "42" ]]; then
+  echo "Failed!"
+  exit 1
+fi
+echo "OK"

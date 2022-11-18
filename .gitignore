@@ -1,5 +1,5 @@
 jna.jar
 foo.*
 libfoo.so
-HelloWorld*
+Foo*
 build/
