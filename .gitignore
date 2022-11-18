@@ -1,0 +1,5 @@
+kotlinc/
+foo-build/
+foo.*
+libfoo.so
+kfoo.*
